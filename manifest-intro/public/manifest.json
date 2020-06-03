@@ -1,0 +1,40 @@
+{
+    "name": "My Istagram Manifest",
+    "short_name": "Instagram",
+    "description": "This explains about the manifest file for my application",
+    "start_url": "/index",
+    "scope": ".",
+    "icons": [
+        {
+            "src": "/src/images/icons/app-icon-48x48.png",
+            "type": "image/png",
+            "sizes": "48x48"
+        },
+        {
+            "src": "/src/images/icons/app-icon-96x96.png",
+            "type": "image/png",
+            "sizes": "96x96"
+        },
+        {
+            "src": "/src/images/icons/app-icon-144x144.png",
+            "type": "image/png",
+            "sizes": "144x144"
+        },
+        {
+            "src": "/src/images/icons/app-icon-192x192.png",
+            "type": "image/png",
+            "sizes": "192x192"
+        },
+        {
+            "src": "/src/images/icons/app-icon-256x256.png",
+            "type": "image/png",
+            "sizes": "256x256"
+        }
+    ],
+    "display": "standalone",
+    "background_color": "#fff",
+    "theme_color": "#f00",
+    "dir": "ltr",
+    "lang": "en-US",
+    "orientation": "portrait-primary"
+}
