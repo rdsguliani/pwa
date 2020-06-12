@@ -1,10 +1,17 @@
-var CACHE_STATIC_NAME = 'static-v15';
-var CACHE_DYNAMIC_NAME = 'dynamic-v2';
+
+
+importScripts('/src/js/idb.js')
+importScripts('/src/js/db.js')
+
+var CACHE_STATIC_NAME = 'static-v26';
+var CACHE_DYNAMIC_NAME = 'dynamic-v3';
 var STATIC_FILES = [
   '/',
   '/index.html',
   '/offline.html',
   '/src/js/app.js',
+  '/src/js/idb.js',
+  '/src/js/db.js',
   '/src/js/feed.js',
   '/src/js/promise.js',
   '/src/js/fetch.js',
@@ -67,21 +74,27 @@ function isInArray(string, array) {
   }
   return array.indexOf(cachePath) > -1;
 }
+
 self.addEventListener('fetch', function (event) {
 
-  var url = 'https://pwagram-99adf.firebaseio.com/posts';
+  var url = 'https://pwagram-417ff.firebaseio.com/posts';
   if (event.request.url.indexOf(url) > -1) {
-    event.respondWith(
-      caches.open(CACHE_DYNAMIC_NAME)
-        .then(function (cache) {
-          return fetch(event.request)
-            .then(function (res) {
-              // trimCache(CACHE_DYNAMIC_NAME, 3);
-              cache.put(event.request, res.clone());
-              return res;
-            });
-        })
-    );
+      event.respondWith( 
+        fetch(event.request)
+          .then(function(res) {
+            const clonedReq = res.clone();
+            return clonedReq.json()
+          })
+          .then(data => {
+            clearAll('posts').
+              then( () => {
+              for (var key in data) {
+                writeData('posts', data[key])
+              }
+              return data;
+            })
+          })
+    )
   } else if (isInArray(event.request.url, STATIC_FILES)) {
     event.respondWith(
       caches.match(event.request)
@@ -95,7 +108,7 @@ self.addEventListener('fetch', function (event) {
           } else {
             return fetch(event.request)
               .then(function (res) {
-                return caches.open(CACHE_DYNAMIC_NAME)
+                caches.open(CACHE_DYNAMIC_NAME)
                   .then(function (cache) {
                     // trimCache(CACHE_DYNAMIC_NAME, 3);
                     cache.put(event.request.url, res.clone());
